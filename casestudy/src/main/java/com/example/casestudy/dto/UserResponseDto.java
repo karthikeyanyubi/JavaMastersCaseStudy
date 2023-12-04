@@ -19,4 +19,7 @@ public class UserResponseDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isAdmin;
 }

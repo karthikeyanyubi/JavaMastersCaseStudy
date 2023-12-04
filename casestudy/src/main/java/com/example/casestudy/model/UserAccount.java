@@ -29,11 +29,11 @@ public class UserAccount {
     @Column(name = "user_pass")
     private String password;
 
-    @Column(name = "token", columnDefinition = "uuid")
-    private UUID token;
+    @Column(name = "token")
+    private String token;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT 'false'", name = "is_user_admin")
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @CreationTimestamp
     @Column(name = "created_date", nullable = false, updatable = false)
@@ -44,4 +44,6 @@ public class UserAccount {
     @Column(name = "last_modified_date", nullable = false)
     @JsonSerialize(using = DateSerializer.class)
     Date lastModifiedDate;
+
+
 }
