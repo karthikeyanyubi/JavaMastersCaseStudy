@@ -38,7 +38,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(token, null, Collections.emptyList());
                 Authentication authenticated = authenticationManager.authenticate(authentication);
 
-                System.out.println("Authentication Token in Security Context: " + SecurityContextHolder.getContext().getAuthentication());
                 SecurityContextHolder.getContext().setAuthentication(authenticated);
             } catch (UsernameNotFoundException error) {
                 sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED, error.getMessage());
