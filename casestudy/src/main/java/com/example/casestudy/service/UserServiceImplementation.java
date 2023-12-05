@@ -91,6 +91,10 @@ public class UserServiceImplementation implements  UserService{
     public UserResponseDto updateRole(UserAccount user) {
         String loginIdLower = user.getLoginId().toLowerCase();
         Optional<UserAccount>fetchUser = userRepository.findByLoginId(loginIdLower);
+        if(fetchUser.isEmpty())
+        {
+            throw new RuntimeException("User not found for the provided login Id");
+        }
         UserAccount fetchedUser = fetchUser.get();
         fetchedUser.setIsAdmin(user.getIsAdmin());
         userRepository.save(fetchedUser);
