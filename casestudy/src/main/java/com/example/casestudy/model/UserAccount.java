@@ -21,7 +21,7 @@ public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long userId;
+    private Integer userId;
 
     @Column(unique = true, name = "user_login_id")
     @NotBlank(message = "Login ID cannot be blank")

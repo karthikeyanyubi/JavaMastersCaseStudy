@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserAccount,Long> {
+public interface UserRepository extends JpaRepository<UserAccount,Integer> {
     Optional<UserAccount> findByLoginId(String loginId);
 
     Optional<UserAccount> findByToken(String token);
