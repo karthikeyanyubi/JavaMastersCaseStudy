@@ -1,6 +1,7 @@
 package com.example.casestudy.exception;
 
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.springframework.validation.FieldError;
+
+import javax.validation.ConstraintViolation;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,7 +38,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(DataIntegrityViolationException ex) {
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         // Extract information from the exception and build a response
         List<Map<String, String>> errorList = new ArrayList<>();
 
@@ -57,6 +60,30 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        List<Map<String, String>> errorList = new ArrayList<>();
+
+        // Extract the root cause exception
+        Throwable rootCause = ex.getCause();
+
+        if (rootCause instanceof SQLException) {
+            String sqlMessage = rootCause.getMessage();
+            String constraintName = extractConstraintNameFromErrorMessage(sqlMessage);
+
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Constraint violation");
+            error.put("constraint_name", constraintName);
+            errorList.add(error);
+        }
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("errorList", errorList);
+
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception exception) {
