@@ -10,4 +10,6 @@ public interface TripService {
     public void addTrip(Bus bus, Integer routeId, LocalTime startTime, LocalTime endTime);
 
     public HashMap<String, Object> getBusesForRoute(Integer routeId);
+
+    public void deleteTrip(Integer tripId);
 }

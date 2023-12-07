@@ -143,4 +143,17 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/deleteTrip/{tripId}")
+    public ResponseEntity<EntityResponseDto> deleteTrip(@RequestHeader(value = "auth_token")  String authToken, @PathVariable("tripId") int tripId) {
+        try
+        {
+            tripService.deleteTrip(tripId);
+            return ResponseEntity.ok().body(EntityResponseDto.builder().message("Trip deleted successfully").build());
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(EntityResponseDto.builder().message(e.getMessage()).build());
+        }
+    }
+
 }

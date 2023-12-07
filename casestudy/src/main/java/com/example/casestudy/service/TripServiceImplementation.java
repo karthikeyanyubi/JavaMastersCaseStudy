@@ -89,6 +89,16 @@ public class TripServiceImplementation implements TripService    {
         return response;
     }
 
+
+    public void deleteTrip(Integer tripId) {
+        Trip existingTrip = tripRepository.findById(tripId).orElse(null);
+        if (existingTrip == null) {
+            // Handle the case where the Trip does not exist
+            throw new RuntimeException("Trip not found for the provided trip Id");
+        }
+        tripRepository.delete(existingTrip);
+    }
+
     // Helper method to check for time overlap
     private boolean isTimeOverlap(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
         return !start1.isAfter(end2) && !end1.isBefore(start2);
