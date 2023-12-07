@@ -89,7 +89,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/addBusDetails")
+    @PostMapping("/addBus")
     public ResponseEntity<EntityResponseDto> addBusDetails(@RequestHeader(value = "auth_token")  String authToken,@Valid @RequestBody Bus bus) {
         try
         {
