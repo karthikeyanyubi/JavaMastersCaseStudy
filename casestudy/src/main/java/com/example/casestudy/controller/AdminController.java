@@ -6,16 +6,16 @@ import com.example.casestudy.dto.UserResponseDto;
 import com.example.casestudy.model.Bus;
 import com.example.casestudy.model.Route;
 import com.example.casestudy.model.UserAccount;
-import com.example.casestudy.service.BusService;
-import com.example.casestudy.service.BusServiceImplementation;
-import com.example.casestudy.service.RouteService;
-import com.example.casestudy.service.UserService;
+import com.example.casestudy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -30,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private BusService busService;
+
+    @Autowired
+    private TripService tripService;
 
     @PostMapping("/updateRole")
     public ResponseEntity<UserResponseDto> updateRole(@RequestHeader(value = "auth_token")  String authToken, @RequestBody UserAccount user) {
@@ -117,6 +120,22 @@ public class AdminController {
         {
             busService.deleteBus(busId);
             return ResponseEntity.ok().body(EntityResponseDto.builder().message("Bus deleted successfully").build());
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(EntityResponseDto.builder().message(e.getMessage()).build());
+        }
+    }
+
+    @PostMapping("/addTrip/{routeId}")
+    public ResponseEntity<EntityResponseDto> addTrip(@RequestHeader(value = "auth_token")  String authToken, @PathVariable("routeId") int routeId, @RequestBody Bus bus,@RequestParam("startTime") String startTime,@RequestParam("endTime") String endTime)
+    {
+        try
+        {
+            LocalTime startDateTime = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
+            LocalTime endDateTime = LocalTime.parse(endTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
+            tripService.addTrip(bus,routeId,startDateTime,endDateTime);
+            return ResponseEntity.ok().body(EntityResponseDto.builder().message("Trip added successfully").build());
         }
         catch (Exception e)
         {

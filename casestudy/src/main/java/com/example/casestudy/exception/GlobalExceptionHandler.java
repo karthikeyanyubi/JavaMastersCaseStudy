@@ -14,8 +14,6 @@ import java.util.*;
 
 import org.springframework.validation.FieldError;
 
-import javax.validation.ConstraintViolation;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -61,7 +59,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
         List<Map<String, String>> errorList = new ArrayList<>();
 

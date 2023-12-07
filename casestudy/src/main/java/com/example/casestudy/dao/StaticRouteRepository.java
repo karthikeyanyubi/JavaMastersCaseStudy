@@ -42,6 +42,13 @@ public class StaticRouteRepository {
         return new ArrayList<>(staticRoute.values());
     }
 
+    public Route getRoute(int routeId)
+    {
+        if(!staticRoute.containsKey(routeId))
+            throw new RuntimeException("Route does not exist for the provided Id");
+        return staticRoute.get(routeId);
+    }
+
     public void deleteRoute(int routeId)
     {
         if(!staticRoute.containsKey(routeId))
@@ -49,5 +56,9 @@ public class StaticRouteRepository {
         staticRoute.remove(routeId);
     }
 
+    public boolean routeExists(int routeId)
+    {
+        return staticRoute.containsKey(routeId);
+    }
 
 }
